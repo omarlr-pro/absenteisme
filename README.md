@@ -1,28 +1,58 @@
 # Projet d'analyse de l'absentéisme au lycée
 
-Ce projet génère un jeu de données simulé autour de l'absentéisme scolaire dans des lycées marocains. L'objectif est d'avoir une base exploitable pour l'analyse de données, la préparation BI et la mise en place de tableaux de bord Power BI centrés sur les causes possibles de l'absentéisme des élèves.
+Ce projet simule un environnement analytique autour de l'absentéisme scolaire dans des lycées marocains. L'objectif est d'expliquer pourquoi les élèves s'absentent, d'identifier les facteurs de risque et de construire une base propre pour l'analyse dans Power BI.
 
-## Objectif
+Le projet a été pensé comme un vrai travail de data analyst et de data engineer: génération des données, structuration du pipeline, transformation, modélisation analytique et restitution visuelle.
 
-L'idée principale est de comprendre pourquoi les élèves ne viennent pas en classe, en croisant plusieurs dimensions:
+## Vision métier
 
-- la région
-- le type d'établissement
-- le niveau et la filière
-- les absences justifiées et non justifiées
-- les notes et le risque de décrochage
+L'analyse cherche à répondre à des questions concrètes:
 
-Le projet est pensé comme un cas d'usage data analyst / data engineer, avec une logique de production de données, de modélisation, puis de restitution dans Power BI.
+- quels élèves ou classes présentent le plus fort risque d'absentéisme
+- quelles régions montrent des écarts de présence et de performance
+- comment les absences influencent les notes et le risque de décrochage
+- quelles tendances saisonnières apparaissent dans les absences
 
-## Contenu du projet
+## Architecture du projet
 
-- `generate_education_lycee_dataset.py`: script Python qui génère les données
-- `data_raw/`: dossier de sortie des fichiers CSV produits par le script
-- fichiers `.pbix`: rapports Power BI liés à l'analyse du projet
+Le projet suit une logique Bronze / Silver, adaptée à une architecture analytique moderne.
 
-## Données générées
+```mermaid
+flowchart LR
+	A[Sources simulées<br/>élèves, classes, établissements, notes, présences] --> B[Bronze<br/>données brutes et historisées]
+	B --> C[dbt<br/>tests, nettoyage, transformations, règles métier]
+	C --> D[Silver<br/>tables propres et prêtes pour l'analyse]
+	D --> E[Power BI<br/>tableaux de bord et KPI]
+```
 
-Le script produit plusieurs tables pour simuler un petit entrepôt de données:
+### Rôle de chaque couche
+
+- Bronze: conservation des données brutes, traçables et réutilisables
+- dbt: transformation SQL, contrôle qualité, normalisation des métriques
+- Silver: tables prêtes à analyser avec une structure claire
+- Power BI: visualisation, suivi des KPI et exploration métier
+
+## Pipeline de travail
+
+```mermaid
+flowchart TD
+	A[Génération du dataset en Python] --> B[Export des tables]
+	B --> C[Chargement dans Snowflake]
+	C --> D[Transformation avec dbt]
+	D --> E[Création des tables Silver]
+	E --> F[Modélisation Power BI]
+	F --> G[Analyse de l'absentéisme et du décrochage]
+```
+
+## Ce que contient le projet
+
+- `generate_education_lycee_dataset.py`: script Python qui génère les données simulées
+- `data_raw/`: dossier des fichiers produits par le script
+- fichiers `.pbix`: rapports Power BI liés au projet
+
+## Données produites
+
+Le script génère plusieurs tables pour couvrir le cycle analytique:
 
 - régions
 - établissements
@@ -30,53 +60,64 @@ Le script produit plusieurs tables pour simuler un petit entrepôt de données:
 - élèves
 - enseignants
 - matières
-- temps
+- calendrier
 - notes
 - présences
 - métriques élèves
 
-Ces données permettent d'étudier les absences, les résultats scolaires et les disparités entre régions.
+Cette structure permet d'analyser les absences, les résultats scolaires et les disparités territoriales dans une logique proche d'un entrepôt de données.
 
-## Chaîne data et BI
+## Méthode d'analyse
 
-Le projet suit une logique proche d'une chaîne data complète:
+Le projet se place à la frontière entre analyse métier et ingénierie data:
 
-- préparation et génération des données avec Python et pandas
-- organisation des fichiers pour exploitation analytique
-- modélisation pour Power BI
-- utilisation de SSIS pour l'alimentation et les flux ETL
-- utilisation de SSAS pour la couche de modèle analytique
+- compréhension du contexte scolaire
+- création d'un dataset exploitable pour le reporting
+- structuration de la donnée pour Snowflake
+- transformations dbt pour fiabiliser les tables d'analyse
+- préparation des indicateurs pour Power BI
 
-## Pourquoi ce jeu de données est utile
+## Ce que j'ai cherché à démontrer
 
-Le dataset a été construit pour permettre des analyses comme:
+- une chaîne de données propre et cohérente
+- une architecture Bronze / Silver claire
+- une logique d'analyse orientée décision
+- une préparation adaptée au reporting et au monitoring
+- une lecture simple du phénomène d'absentéisme
 
-- comparaison des taux d'absentéisme par région
-- lien entre absence et performance scolaire
-- détection de profils à risque
-- observation des variations saisonnières
-- identification d'axes d'action pour réduire l'absentéisme
+## Exemples d'indicateurs utiles
 
-## Utilisation
+- taux d'absentéisme par région
+- taux d'absences justifiées et non justifiées
+- note moyenne par classe et par matière
+- niveau de risque de décrochage
+- évolution saisonnière des absences
 
-1. Exécuter `generate_education_lycee_dataset.py`
-2. Récupérer les CSV générés dans `data_raw/`
-3. Charger les données dans Power BI ou un entrepôt analytique
-4. Construire les mesures et visuels de suivi de l'absentéisme
-
-## Stack
+## Stack utilisée
 
 - Python
 - pandas
 - numpy
+- Snowflake
+- dbt
 - Power BI
-- SSIS
-- SSAS
 
-## Lecture du projet
+## Comment utiliser le projet
 
-Si vous voulez comprendre le projet rapidement, commencez par:
+1. Exécuter `generate_education_lycee_dataset.py`
+2. Charger les données générées dans Snowflake
+3. Appliquer les transformations dbt pour construire la couche Silver
+4. Connecter Power BI aux tables préparées
+5. Construire les visuels et les KPI d'absentéisme
+
+## Lecture rapide
+
+Si vous voulez comprendre le projet en quelques minutes, commencez par:
 
 1. ce README
 2. le script de génération des données
 3. les rapports Power BI
+
+## Note sur les schémas
+
+Les blocs Mermaid ci-dessus servent de schémas intégrés directement dans le README. Sur GitHub, ils s'affichent comme des visuels et remplacent avantageusement des images statiques quand on veut documenter un pipeline analytique.
