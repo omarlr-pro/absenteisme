@@ -153,11 +153,11 @@ schools = pd.DataFrame(schools, columns=[
     "performance_index", "capacity"
 ])
 
-print(f"✅ {len(schools)} établissements créés (variation régionale)")
+print(f"{len(schools)} établissements créés (variation régionale)")
 for region_name, count in SCHOOLS_PER_REGION.items():
     region_id = regions[regions["region_name"] == region_name]["region_id"].values[0]
     actual = len(schools[schools["region_id"] == region_id])
-    print(f"   • {region_name}: {actual} écoles")
+    print(f"   - {region_name}: {actual} écoles")
 classes = []
 class_id = 1
 for _, school in schools.iterrows():
@@ -179,7 +179,7 @@ classes = pd.DataFrame(classes, columns=[
     "class_id", "class_name", "level", "stream", "school_id"
 ])
 
-print(f"✅ {len(classes)} classes créées")
+print(f"{len(classes)} classes créées")
 first_names = [
     "Yassine", "Sara", "Hamza", "Imane", "Omar", "Khadija", "Amina", "Mehdi",
     "Youssef", "Salma", "Aya", "Adam", "Zineb", "Anas", "Fatima", "Ayoub",
@@ -193,7 +193,7 @@ last_names = [
     "Idrissi", "Bennani", "Fassi", "Alaoui", "Zahraoui", "Tazi", "El Ouardi",
     "Benhaddou", "Chraibi", "Lahlou", "Filali", "Bouazza", "Kadiri", "Naciri"
 ]
-print("🔄 Génération des élèves avec profils régionaux différenciés...")
+print("Génération des élèves avec profils régionaux différenciés...")
 students = []
 student_id = 1
 
@@ -254,12 +254,12 @@ students = pd.DataFrame(students, columns=[
     "profil_absence", "region_name"
 ])
 
-print(f"✅ {len(students):,} élèves générés")
-print("\n📊 RÉPARTITION PAR RÉGION:")
+print(f"{len(students):,} élèves générés")
+print("\nRÉPARTITION PAR RÉGION:")
 for region_name in regions["region_name"]:
     count = len(students[students["region_name"] == region_name])
     avg_absence = students[students["region_name"] == region_name]["target_absence_rate"].mean() * 100
-    print(f"   • {region_name}: {count:,} élèves (absence moy: {avg_absence:.1f}%)")
+    print(f"   - {region_name}: {count:,} élèves (absence moy: {avg_absence:.1f}%)")
 subject_coefficients = {
     "Mathématiques": 7,
     "Physique": 7,
@@ -330,7 +330,7 @@ MONTHLY_ABSENCE_FACTOR = {
     5: 0.9,
     6: 1.1
 }
-print("🔄 Génération des notes avec disparités régionales...")
+print("Génération des notes avec disparités régionales...")
 grades = []
 grade_id = 1
 
@@ -388,8 +388,8 @@ grades = pd.DataFrame(grades, columns=[
     "class_id", "term", "year", "score", "status"
 ])
 
-print(f"✅ {len(grades):,} notes générées")
-print("🔄 Génération des présences avec variations mensuelles...")
+print(f"{len(grades):,} notes générées")
+print("Génération des présences avec variations mensuelles...")
 attendance = []
 attendance_id = 1
 
@@ -456,8 +456,8 @@ attendance = pd.DataFrame(attendance, columns=[
     "subject_id", "teacher_id", "date", "status", "reason"
 ])
 
-print(f"✅ {len(attendance):,} enregistrements")
-print("🔄 Calcul des métriques...")
+print(f"{len(attendance):,} enregistrements")
+print("Calcul des métriques...")
 student_metrics = []
 
 for _, student in students.iterrows():
@@ -496,7 +496,7 @@ student_metrics = pd.DataFrame(student_metrics, columns=[
     "risk_level", "dropout_risk_score"
 ])
 
-print("💾 Export des fichiers...")
+print("Export des fichiers...")
 
 students_export = students.drop(columns=['target_absence_rate', 'profil_absence', 'region_name'])
 
@@ -513,15 +513,15 @@ attendance.to_csv(f"{OUTPUT_DIR}/attendance.csv", index=False, encoding='utf-8-s
 student_metrics.to_csv(f"{OUTPUT_DIR}/student_metrics.csv", index=False, encoding='utf-8-sig')
 
 print("\n" + "="*80)
-print("✅ DATASET AVEC VRAIE DIVERSITÉ RÉGIONALE")
+print("DATASET AVEC VRAIE DIVERSITÉ RÉGIONALE")
 print("="*80)
 
-print(f"\n📊 VUE GLOBALE")
-print(f"   • Total élèves: {len(students):,}")
-print(f"   • Total établissements: {len(schools)}")
-print(f"   • Total classes: {len(classes)}")
+print(f"\nVUE GLOBALE")
+print(f"   - Total élèves: {len(students):,}")
+print(f"   - Total établissements: {len(schools)}")
+print(f"   - Total classes: {len(classes)}")
 
-print(f"\n🗺️  COMPARAISON RÉGIONALE DÉTAILLÉE")
+print(f"\nCOMPARAISON RÉGIONALE DÉTAILLÉE")
 print("-" * 80)
 
 for _, region in regions.iterrows():
@@ -542,10 +542,10 @@ for _, region in regions.iterrows():
     avg_score = region_grades["score"].mean() if len(region_grades) > 0 else 0
     success_rate = (region_grades['status'] == 'Validé').sum() / len(region_grades) * 100 if len(region_grades) > 0 else 0
     
-    print(f"\n🏙️  {region_name}")
-    print(f"   📚 Établissements: {len(region_schools)}")
-    print(f"   🎓 Classes: {len(region_classes)}")
-    print(f"   👥 Élèves: {len(region_students):,}")
-    print(f"   📉 Taux d'absentéisme: {absence_rate:.2f}%")
-    print(f"   📊 Note moyenne: {avg_score:.2f}/20")
-    print(f"   ✅ Taux de réussite: {success_rate:.1f}%")
+    print(f"\n{region_name}")
+    print(f"   - Établissements: {len(region_schools)}")
+    print(f"   - Classes: {len(region_classes)}")
+    print(f"   - Élèves: {len(region_students):,}")
+    print(f"   - Taux d'absentéisme: {absence_rate:.2f}%")
+    print(f"   - Note moyenne: {avg_score:.2f}/20")
+    print(f"   - Taux de réussite: {success_rate:.1f}%")
