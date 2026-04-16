@@ -50,6 +50,68 @@ flowchart TD
 	F --> G[Analyse de l'absentéisme et du décrochage]
 ```
 
+## Modèle de données analytique
+
+```mermaid
+erDiagram
+	REGION ||--o{ ETABLISSEMENT : contient
+	ETABLISSEMENT ||--o{ CLASSE : organise
+	CLASSE ||--o{ STUDENT : accueille
+	SUBJECT ||--o{ GRADES : evalue
+	STUDENT ||--o{ GRADES : obtient
+	STUDENT ||--o{ ATTENDANCE : genere
+	TIME ||--o{ ATTENDANCE : date
+	TEACHER ||--o{ ATTENDANCE : encadre
+	TEACHER ||--o{ GRADES : note
+	STUDENT ||--|| STUDENT_METRICS : consolide
+```
+
+Ce schéma montre la logique étoile utilisée pour l'analyse: dimensions stables et tables de faits centrées sur les notes et les présences.
+
+## Storyboard Power BI
+
+```mermaid
+flowchart LR
+	A[Page 1<br/>Vue Direction] --> B[Page 2<br/>Risque et Décrochage]
+	B --> C[Page 3<br/>Analyse Régionale]
+	C --> D[Page 4<br/>Saisonnalité et Tendances]
+	D --> E[Page 5<br/>Plan d'action]
+```
+
+## Parcours décisionnel rectorat
+
+```mermaid
+sequenceDiagram
+	participant R as Rectorat
+	participant A as Data Analyst
+	participant D as Data Engineer
+	participant B as Power BI
+	R->>A: Demande de suivi absentéisme
+	A->>D: Besoin de données fiabilisées
+	D->>D: Chargement Snowflake + transformations dbt
+	D->>B: Publication du modèle Silver
+	A->>B: Construction KPI et dashboards
+	B->>R: Restitution des résultats
+	R->>R: Décisions de ciblage des actions
+```
+
+## Roadmap de mise en production
+
+```mermaid
+gantt
+	title Plan de passage vers le réel
+	dateFormat  YYYY-MM-DD
+	section Data Platform
+	Connexion sources réelles            :a1, 2026-05-01, 14d
+	Chargements Snowflake automatisés    :a2, after a1, 14d
+	section Analytics Engineering
+	Modèles dbt Silver                   :b1, after a2, 14d
+	Tests dbt et qualité                 :b2, after b1, 10d
+	section BI et Pilotage
+	Dashboards direction                 :c1, after b2, 10d
+	Ateliers de décision                 :c2, after c1, 7d
+```
+
 ## Ce que contient le projet
 
 - `generate_education_lycee_dataset.py`: script Python qui génère les données simulées
