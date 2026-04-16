@@ -1,5 +1,11 @@
 # Projet d'analyse de l'absentéisme au lycée
 
+## Résumé exécutif
+
+Ce dépôt présente un projet complet de data analytics appliqué à l'absentéisme scolaire. L'approche relie la donnée brute aux décisions terrain: détection des élèves à risque, priorisation des actions par région et pilotage des performances via Power BI.
+
+Objectif de valeur: fournir à une direction académique un socle analytique fiable pour agir vite, cibler les efforts et réduire le décrochage.
+
 Ce projet simule un environnement analytique autour de l'absentéisme scolaire dans des lycées marocains. L'objectif est d'expliquer pourquoi les élèves s'absentent, d'identifier les facteurs de risque et de construire une base propre pour l'analyse dans Power BI.
 
 Le projet a été pensé comme un vrai travail de data analyst et de data engineer: génération des données, structuration du pipeline, transformation, modélisation analytique et restitution visuelle.
@@ -77,6 +83,37 @@ Le projet se place à la frontière entre analyse métier et ingénierie data:
 - transformations dbt pour fiabiliser les tables d'analyse
 - préparation des indicateurs pour Power BI
 
+## Résultats métier attendus
+
+Le dispositif analytique permet de passer de la description à l'action:
+
+- identifier les établissements où l'absentéisme non justifié est le plus critique
+- repérer en amont les profils à risque de décrochage
+- cibler les interventions pédagogiques et sociales par zone
+- suivre l'efficacité des actions correctives dans le temps
+
+Exemples de décisions rendues possibles:
+
+- renforcer le suivi individualisé sur les classes les plus exposées
+- ajuster les actions de prévention avant les périodes saisonnières à risque
+- prioriser les ressources éducatives sur les établissements les plus vulnérables
+
+## Qualité et fiabilité des données
+
+Le projet met l'accent sur la qualité de la donnée pour assurer des décisions robustes:
+
+- séparation claire des couches Bronze et Silver
+- standardisation des indicateurs clés avant consommation BI
+- transformations reproductibles via dbt
+- base prête pour des contrôles additionnels (tests de complétude, cohérence, unicité)
+
+```mermaid
+flowchart LR
+	A[Bronze<br/>données brutes] --> B[Contrôles dbt<br/>qualité et conformité]
+	B --> C[Silver<br/>données fiabilisées]
+	C --> D[KPI Power BI<br/>pilotage métier]
+```
+
 ## Ce que j'ai cherché à démontrer
 
 - une chaîne de données propre et cohérente
@@ -85,6 +122,14 @@ Le projet se place à la frontière entre analyse métier et ingénierie data:
 - une préparation adaptée au reporting et au monitoring
 - une lecture simple du phénomène d'absentéisme
 
+## Compétences démontrées
+
+- Data engineering: structuration de pipeline et modélisation en couches
+- Analytics engineering: transformations métier avec dbt
+- Data analysis: définition et interprétation des KPI d'absentéisme
+- BI: conception de tableaux de bord orientés décision
+- Vision produit data: alignement des indicateurs avec les besoins d'une direction
+
 ## Exemples d'indicateurs utiles
 
 - taux d'absentéisme par région
@@ -92,6 +137,20 @@ Le projet se place à la frontière entre analyse métier et ingénierie data:
 - note moyenne par classe et par matière
 - niveau de risque de décrochage
 - évolution saisonnière des absences
+
+## Plan d'industrialisation
+
+Pour un passage en environnement réel, l'étape suivante est claire:
+
+1. brancher des sources opérationnelles réelles
+2. automatiser les chargements Snowflake
+3. renforcer les tests dbt (qualité et régression)
+4. publier des tableaux de bord avec suivi périodique
+5. instaurer une gouvernance des indicateurs avec les équipes académiques
+
+## Pourquoi ce projet est prêt pour un recruteur
+
+Ce travail montre une capacité à livrer une chaîne analytique de bout en bout, avec une double maîtrise technique et métier. Il ne s'arrête pas à des graphiques: il structure la donnée pour soutenir des décisions concrètes sur la réussite scolaire.
 
 ## Stack utilisée
 
